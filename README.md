@@ -7,7 +7,8 @@ Built with Next.js 16 (App Router), React 19 and Tailwind CSS 4. It has no other
 ## What's included
 
 **For customers**
-- Home page, menu with category filters, search and sorting, and a page for each product
+- Home page with real food photos, a kitchen gallery and a looping video; menu with category filters, search and sorting; a page for each product
+- Party trays from the bulk food menu (jollof trays, proteins, pastries, zobo) orderable online with size options
 - Options on dishes (spice level, add-ons) with prices calculated as you choose
 - Slide-out bag with a free-delivery progress bar and "goes well with" suggestions; the bag is saved in the browser
 - Checkout: pickup or delivery, date and time window (with minimum notice), HST, delivery fee, and payment by Interac e-Transfer or card (Stripe)
@@ -41,7 +42,7 @@ Open http://localhost:3000. The dashboard is at http://localhost:3000/admin.
 | FAQ | `src/lib/faq.ts` |
 | Colours and fonts | `src/app/globals.css`, `src/app/layout.tsx` |
 
-**Product photos:** every dish has a drawn illustration until real photos are added. To use a photo, put it in `public/images/products/` (a square image of about 1200px works best) and set `image: "/images/products/jollof.jpg"` on the product in `catalog.ts`.
+**Product photos:** real photos live in `public/images/` and are attached to products with `image` (and optionally `imagePosition` to adjust the crop) in `catalog.ts`. Every photo gets the same light warm grade (the `.photo-grade` class in `globals.css`) so phone shots taken in different lighting look consistent. Items without a photo yet show a drawn illustration: grilled tilapia, plantain, parfait, fruit juice, soft drink, water and turkey. Add a photo to switch any of them over. Resize new photos to about 1600px on the long edge first.
 
 ## Payments
 

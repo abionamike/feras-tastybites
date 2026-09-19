@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { FoodIllustration } from "@/components/ProductArt";
+import { Polaroid } from "@/components/Polaroid";
+import { Photo } from "@/components/ProductArt";
 import { ArrowRightIcon } from "@/components/icons";
 import { site } from "@/lib/site";
 
@@ -37,12 +38,22 @@ export default function AboutPage() {
             Taste it yourself <ArrowRightIcon width={18} height={18} />
           </Link>
         </div>
-        <div className="relative mx-auto w-full max-w-md">
-          <div className="absolute -inset-6 rotate-6 rounded-[3rem] bg-blush" />
-          <div className="relative rounded-[3rem] bg-paper p-8 shadow-xl">
-            <Image src="/brand/logo-badge.jpg" alt="Feras Tasty Bites logo" width={1080} height={1080} className="w-full rounded-full" priority />
+        <div className="relative mx-auto w-full max-w-md pb-12 pr-10">
+          <div className="absolute -inset-4 rotate-3 rounded-[3rem] bg-blush" aria-hidden />
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border-[10px] border-paper shadow-xl">
+            <Photo src="/images/meat-pie-making.jpg" alt="Filling meat pies by hand" sizes="(min-width: 1024px) 420px, 90vw" priority style={{ objectPosition: "50% 55%" }} />
           </div>
-          <FoodIllustration art="puff-puff" className="absolute -bottom-10 -left-10 size-40 drop-shadow-xl" />
+          <div className="absolute -right-2 bottom-0 grid size-36 place-items-center rounded-full bg-paper p-2 shadow-xl sm:size-44">
+            <Image src="/brand/logo-badge.jpg" alt="Feras Tasty Bites logo" width={360} height={360} className="size-full rounded-full" />
+          </div>
+          <Polaroid
+            src="/images/chin-chin.jpg"
+            alt="Freshly made chin chin"
+            caption="chin chin day"
+            tilt={-8}
+            sizes="160px"
+            className="absolute -left-8 top-8 hidden w-36 sm:block"
+          />
         </div>
       </section>
 
@@ -58,6 +69,29 @@ export default function AboutPage() {
               <p className="mt-3 text-cream/80">{item.v}</p>
             </div>
           ))}
+        </div>
+      </section>
+      <section className="container-x pt-20">
+        <div className="grid items-center gap-10 overflow-hidden rounded-[2.5rem] bg-ink text-cream lg:grid-cols-2">
+          <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[380px]">
+            <Photo src="/images/vendor-table.jpg" alt="Feras Tasty Bites table at a vendor day" sizes="(min-width: 1024px) 50vw, 100vw" />
+          </div>
+          <div className="p-8 sm:p-12 lg:pl-0">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-blush">Events & vendor days</p>
+            <h2 className="mt-3 font-display text-4xl font-black tracking-tight">Come say hi in person</h2>
+            <p className="mt-4 text-cream/75">
+              We pop up at Toronto events and vendor days with small chops, zobo and more. Follow us on Instagram to see where
+              we&apos;ll be next, or book us for your own event.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href={site.instagram.url} target="_blank" rel="noreferrer" className="btn bg-cream text-ink hover:bg-white">
+                Follow @{site.instagram.handle}
+              </a>
+              <Link href="/catering" className="btn border border-white/25 text-cream hover:bg-white/10">
+                Book us
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </>

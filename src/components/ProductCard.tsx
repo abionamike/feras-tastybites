@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Product } from "@/lib/catalog";
+import { hasFromPrice, type Product } from "@/lib/catalog";
 import { formatMoney } from "@/lib/pricing";
 import { QuickAdd } from "./QuickAdd";
 import { ProductArt } from "./ProductArt";
@@ -36,7 +36,7 @@ export function ProductCard({ product, priority }: { product: Product; priority?
         <ProductArt
           product={product}
           priority={priority}
-          className="aspect-[4/3.4] transition duration-500 [&_svg]:transition [&_svg]:duration-700 group-hover:[&_svg]:rotate-[6deg] group-hover:[&_svg]:scale-[1.04]"
+          className="aspect-[4/3.4] transition duration-500 [&_svg]:transition [&_svg]:duration-700 group-hover:[&_img]:scale-[1.06] group-hover:[&_svg]:rotate-[6deg] group-hover:[&_svg]:scale-[1.04]"
         />
         <div className="absolute left-4 top-4">
           <ProductTags product={product} />
@@ -49,7 +49,10 @@ export function ProductCard({ product, priority }: { product: Product; priority?
               {product.name}
             </Link>
           </h3>
-          <p className="shrink-0 font-display text-xl font-bold text-jollof">{formatMoney(product.price)}</p>
+          <p className="shrink-0 text-right font-display text-xl font-bold leading-tight text-jollof">
+            {hasFromPrice(product) && <span className="block font-sans text-[10px] font-bold uppercase tracking-wider text-cocoa">From</span>}
+            {formatMoney(product.price)}
+          </p>
         </div>
         <p className="mt-1.5 text-sm leading-relaxed text-cocoa">{product.blurb}</p>
         <div className="relative z-10 mt-auto pt-5">
