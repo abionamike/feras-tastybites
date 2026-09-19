@@ -119,6 +119,14 @@ body::before {
   background-size: 28px 28px, 28px 28px, auto, auto;
 }
 
+/* Warm, consistent grade for customer-facing food photos */
+.photo-grade {
+  filter: saturate(1.08) contrast(1.04) brightness(1.02) sepia(0.06);
+  transition:
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.4s;
+}
+
 .pattern-dots {
   background-image: radial-gradient(rgb(42 26 20 / 0.09) 1.2px, transparent 1.4px);
   background-size: 18px 18px;

@@ -18,6 +18,7 @@ export const artBackgrounds: Record<ArtKind, string> = {
   juice: "#ffe0b5",
   soda: "#dff0e3",
   water: "#dcecf6",
+  turkey: "#fcd9bf",
 };
 
 // Rounded so server and browser produce identical markup
@@ -100,10 +101,10 @@ function Plantains({ x = 0, y = 0, n = 5, scale = 1 }: { x?: number; y?: number;
   );
 }
 
-function Drumstick() {
+function Drumstick({ at = "translate(236 172) rotate(-32)" }: { at?: string }) {
   const meat = "M-78 0C-78-50-24-58 18-28c14 10 26 18 34 28-8 10-20 18-34 28-42 30-96 22-96-28Z";
   return (
-    <g transform="translate(236 172) rotate(-32)">
+    <g transform={at}>
       <ellipse cx="-14" cy="34" rx="70" ry="14" fill="#5a1f06" opacity=".25" />
       <rect x="40" y="-9" width="62" height="18" rx="9" fill="#f6e6cc" />
       <circle cx="104" cy="-11" r="12" fill="#fbeed9" />
@@ -482,6 +483,15 @@ export function FoodIllustration({ art, className }: { art: ArtKind; className?:
         </Plate>
       );
       break;
+    case "turkey":
+      scene = (
+        <Plate>
+          <Drumstick at="translate(170 150) rotate(-20) scale(.85)" />
+          <Drumstick at="translate(232 232) rotate(-40) scale(.85)" />
+          <Drumstick at="translate(140 258) rotate(-8) scale(.8)" />
+        </Plate>
+      );
+      break;
     case "parfait":
       scene = <Parfait />;
       break;
@@ -521,7 +531,13 @@ export function ProductArt({
   return (
     <div className={`relative overflow-hidden ${className}`} style={{ backgroundColor: artBackgrounds[product.art] }}>
       {product.image ? (
-        <Image src={product.image} alt={product.name} fill sizes={sizes} priority={priority} className="object-cover" />
+        <Photo
+          src={product.image}
+          alt={product.name}
+          sizes={sizes}
+          priority={priority}
+          style={product.imagePosition ? { objectPosition: product.imagePosition } : undefined}
+        />
       ) : (
         <>
           <div className="pattern-dots absolute inset-0 opacity-60" />
@@ -529,5 +545,40 @@ export function ProductArt({
         </>
       )}
     </div>
+  );
+}
+
+/**
+ * A real food photo with a light, consistent warm grade so phone shots taken in
+ * different lighting sit together, plus a soft inner vignette.
+ */
+export function Photo({
+  src,
+  alt,
+  sizes = "100vw",
+  priority,
+  className = "",
+  style,
+}: {
+  src: string;
+  alt: string;
+  sizes?: string;
+  priority?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className={`photo-grade object-cover ${className}`}
+        style={style}
+      />
+      <span aria-hidden className="pointer-events-none absolute inset-0 shadow-[inset_0_0_60px_rgba(42,26,20,0.18)]" />
+    </>
   );
 }

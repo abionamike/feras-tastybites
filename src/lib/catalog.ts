@@ -1,7 +1,7 @@
 // Menu and prices from the Feras Tasty Bites menu list.
 // To use a real photo for an item, put it in /public/images/products and set `image`.
 
-export type CategoryId = "flavour-packs" | "small-chops" | "drinks";
+export type CategoryId = "flavour-packs" | "small-chops" | "drinks" | "party-trays";
 
 export type ArtKind =
   | "jollof-chicken"
@@ -17,7 +17,8 @@ export type ArtKind =
   | "zobo"
   | "juice"
   | "soda"
-  | "water";
+  | "water"
+  | "turkey";
 
 export type OptionChoice = { id: string; label: string; price?: number };
 
@@ -37,7 +38,10 @@ export type Product = {
   blurb: string;
   description: string;
   art: ArtKind;
+  /** Real photo in /public/images; falls back to the illustration when missing */
   image?: string;
+  /** CSS object-position for the photo crop, e.g. "50% 80%" */
+  imagePosition?: string;
   tags?: ("bestseller" | "spicy" | "vegetarian" | "sweet" | "new")[];
   options?: ProductOption[];
 };
@@ -60,6 +64,12 @@ export const categories: { id: CategoryId; name: string; kicker: string; descrip
     name: "Drinks",
     kicker: "Beverages",
     description: "Something cold to wash it all down.",
+  },
+  {
+    id: "party-trays",
+    name: "Party Trays",
+    kicker: "Bulk menu",
+    description: "Trays and bulk packs for parties, events and the whole family.",
   },
 ];
 
@@ -96,6 +106,7 @@ export const products: Product[] = [
     description:
       "Flavourful West African rice cooked in a rich tomato and pepper sauce, served with well-seasoned chicken grilled perfectly. The smoky, party-style jollof everyone asks for.",
     art: "jollof-chicken",
+    image: "/images/jollof-chicken.jpg",
     tags: ["bestseller", "spicy"],
     options: [spice, mainAddOns],
   },
@@ -108,6 +119,8 @@ export const products: Product[] = [
     description:
       "Flavourful West African rice cooked in a rich tomato and pepper sauce, served with tender beef simmered and fried in pepper sauce.",
     art: "jollof-beef",
+    image: "/images/jollof-tray.jpg",
+    imagePosition: "50% 70%",
     tags: ["spicy"],
     options: [spice, mainAddOns],
   },
@@ -143,6 +156,8 @@ export const products: Product[] = [
     description:
       "Fluffy bite-sized fried dough, lightly sweet and perfectly golden. Soft inside, crisp outside, and impossible to eat just one.",
     art: "puff-puff",
+    image: "/images/puff-puff.jpg",
+    imagePosition: "50% 75%",
     tags: ["bestseller", "vegetarian", "sweet"],
   },
   {
@@ -154,6 +169,8 @@ export const products: Product[] = [
     description:
       "Savoury, buttery pastry stuffed with seasoned minced beef, carrots and potatoes. A Nigerian classic.",
     art: "meat-pie",
+    image: "/images/meat-pie.jpg",
+    imagePosition: "50% 22%",
     tags: ["bestseller"],
   },
   {
@@ -165,6 +182,7 @@ export const products: Product[] = [
     description:
       "A flavourful mix of gizzard and fried plantains sautéed in a rich pepper sauce. Sweet, spicy and savoury in every forkful.",
     art: "gizdodo",
+    image: "/images/gizdodo.jpg",
     tags: ["spicy"],
     options: [spice],
   },
@@ -177,6 +195,8 @@ export const products: Product[] = [
     description:
       "Grilled beef skewers seasoned with bold spices for a smoky, savoury taste.",
     art: "kebab",
+    image: "/images/party-tray.jpg",
+    imagePosition: "50% 30%",
     tags: ["spicy"],
   },
   {
@@ -188,6 +208,7 @@ export const products: Product[] = [
     description:
       "Crunchy, bite-sized fried pastry snacks with a light sweetness. The perfect snack, party favour or gift.",
     art: "chin-chin",
+    image: "/images/chin-chin.jpg",
     tags: ["vegetarian", "sweet"],
   },
   {
@@ -210,6 +231,8 @@ export const products: Product[] = [
     description:
       "A refreshing hibiscus drink infused with fresh fruits, served chilled.",
     art: "zobo",
+    image: "/images/zobo.jpg",
+    imagePosition: "50% 70%",
     tags: ["bestseller", "vegetarian"],
   },
   {
@@ -242,6 +265,156 @@ export const products: Product[] = [
     art: "water",
     tags: ["vegetarian"],
   },
+  // Bulk food menu
+  {
+    slug: "jollof-rice-tray",
+    name: "Jollof Rice Tray",
+    category: "party-trays",
+    price: 65,
+    blurb: "Smoky party jollof by the tray, for a crowd.",
+    description:
+      "Our signature party jollof, cooked in a rich tomato and pepper sauce and packed in a foil tray. Pair it with chicken, beef or turkey for a full party spread.",
+    art: "jollof-beef",
+    image: "/images/jollof-tray.jpg",
+    imagePosition: "50% 70%",
+    options: [
+      {
+        id: "size",
+        label: "Tray size",
+        type: "single",
+        required: true,
+        choices: [
+          { id: "medium", label: "Medium" },
+          { id: "large", label: "Large", price: 25 },
+          { id: "xlarge", label: "X-Large", price: 65 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "grilled-chicken-bulk",
+    name: "Grilled Chicken",
+    category: "party-trays",
+    price: 30,
+    blurb: "Well-seasoned grilled chicken, by the piece count.",
+    description: "Well-seasoned chicken, grilled until smoky and golden. The perfect partner to a tray of jollof.",
+    art: "turkey",
+    image: "/images/party-tray.jpg",
+    imagePosition: "50% 92%",
+    options: [
+      {
+        id: "pieces",
+        label: "How many pieces",
+        type: "single",
+        required: true,
+        choices: [
+          { id: "10", label: "10 pieces" },
+          { id: "15", label: "15 pieces", price: 15 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "peppered-beef-bulk",
+    name: "Peppered Beef",
+    category: "party-trays",
+    price: 35,
+    blurb: "Tender beef simmered and fried in pepper sauce.",
+    description: "Tender beef simmered, fried and tossed in a rich pepper sauce.",
+    art: "jollof-beef",
+    image: "/images/peppered-meat.jpg",
+    tags: ["spicy"],
+    options: [
+      {
+        id: "pieces",
+        label: "How many pieces",
+        type: "single",
+        required: true,
+        choices: [
+          { id: "10", label: "10 pieces" },
+          { id: "15", label: "15 pieces", price: 15 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "turkey-bulk",
+    name: "Turkey, 15 pieces",
+    category: "party-trays",
+    price: 65,
+    blurb: "Fifteen pieces of well-seasoned turkey.",
+    description: "Fifteen pieces of well-seasoned turkey, cooked to order for your event.",
+    art: "turkey",
+  },
+  {
+    slug: "gizdodo-1l",
+    name: "Gizdodo, 1 L",
+    category: "party-trays",
+    price: 30,
+    blurb: "A litre of gizzard and plantain in pepper sauce.",
+    description: "A one-litre pack of gizzard and fried plantain sautéed in our rich pepper sauce.",
+    art: "gizdodo",
+    image: "/images/gizdodo.jpg",
+    tags: ["spicy"],
+  },
+  {
+    slug: "meat-pies-10",
+    name: "Meat Pies, 10 pieces",
+    category: "party-trays",
+    price: 45,
+    blurb: "Ten buttery meat pies for sharing.",
+    description: "Ten savoury, buttery pastries stuffed with seasoned beef, carrots and potatoes.",
+    art: "meat-pie",
+    image: "/images/meat-pie.jpg",
+    imagePosition: "50% 22%",
+  },
+  {
+    slug: "puff-puff-30",
+    name: "Puff Puff, 30 pieces",
+    category: "party-trays",
+    price: 25,
+    blurb: "Thirty fluffy, golden puff puff.",
+    description: "Thirty fluffy, lightly sweet puff puff. Always the first thing to go at a party.",
+    art: "puff-puff",
+    image: "/images/puff-puff.jpg",
+    imagePosition: "50% 75%",
+    tags: ["vegetarian", "sweet"],
+  },
+  {
+    slug: "beef-kebab-10",
+    name: "Beef Kebab, 10 sticks",
+    category: "party-trays",
+    price: 55,
+    blurb: "Ten grilled beef skewers with peppers and onions.",
+    description: "Ten grilled beef skewers with peppers and onions, seasoned with bold spices.",
+    art: "kebab",
+    image: "/images/party-tray.jpg",
+    imagePosition: "50% 30%",
+    tags: ["spicy"],
+  },
+  {
+    slug: "chin-chin-medium",
+    name: "Chin Chin, medium",
+    category: "party-trays",
+    price: 40,
+    blurb: "A medium pack of crunchy chin chin.",
+    description: "A medium-size pack of crunchy, lightly sweet chin chin. Great for parties and gifting.",
+    art: "chin-chin",
+    image: "/images/chin-chin.jpg",
+    tags: ["vegetarian", "sweet"],
+  },
+  {
+    slug: "zobo-2l",
+    name: "Zobo, 2 L",
+    category: "party-trays",
+    price: 25,
+    blurb: "Two litres of chilled hibiscus drink.",
+    description: "Two litres of our refreshing hibiscus drink infused with fresh fruits.",
+    art: "zobo",
+    image: "/images/zobo.jpg",
+    imagePosition: "50% 70%",
+    tags: ["vegetarian"],
+  },
 ];
 
 export const getProduct = (slug: string) => products.find((p) => p.slug === slug);
@@ -249,3 +422,7 @@ export const getProduct = (slug: string) => products.find((p) => p.slug === slug
 export const productsIn = (category: CategoryId) => products.filter((p) => p.category === category);
 
 export const bestsellers = () => products.filter((p) => p.tags?.includes("bestseller"));
+
+/** True when the listed price is a starting price (a required choice adds to it). */
+export const hasFromPrice = (p: Product) =>
+  p.options?.some((o) => o.required && o.type === "single" && o.choices.some((c) => c.price)) ?? false;

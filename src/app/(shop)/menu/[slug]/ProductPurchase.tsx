@@ -11,9 +11,12 @@ export function ProductPurchase({ product }: { product: Product }) {
   const { add } = useCart();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+  // Priced choices (sizes) start at the smallest; unpriced ones (spice) at the middle
   const [selections, setSelections] = useState<Record<string, string[]>>(() =>
     Object.fromEntries(
-      (product.options ?? []).filter((o) => o.required && o.type === "single").map((o) => [o.id, [o.choices[Math.min(1, o.choices.length - 1)].id]]),
+      (product.options ?? [])
+        .filter((o) => o.required && o.type === "single")
+        .map((o) => [o.id, [o.choices[o.choices.some((c) => c.price) ? 0 : Math.min(1, o.choices.length - 1)].id]]),
     ),
   );
 

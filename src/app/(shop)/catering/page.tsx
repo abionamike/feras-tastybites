@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { InquiryForm } from "@/components/InquiryForm";
-import { FoodIllustration, artBackgrounds } from "@/components/ProductArt";
-import { CalendarIcon, CheckIcon, GiftIcon, PotIcon, SparkIcon, StoreIcon, WhatsAppIcon } from "@/components/icons";
+import { LoopVideo } from "@/components/LoopVideo";
+import { Polaroid } from "@/components/Polaroid";
+import { ProductCard } from "@/components/ProductCard";
+import { Photo } from "@/components/ProductArt";
+import { ArrowRightIcon, CalendarIcon, CheckIcon, GiftIcon, PotIcon, SparkIcon, StoreIcon, WhatsAppIcon } from "@/components/icons";
+import { productsIn } from "@/lib/catalog";
+import { formatMoney } from "@/lib/pricing";
 import { site, whatsappLink } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -20,10 +25,10 @@ const occasions = [
 ];
 
 const offerings = [
-  { art: "jollof-chicken" as const, title: "Party trays", text: "Jollof rice by the tray with chicken, beef or fish, plus plantain." },
-  { art: "puff-puff" as const, title: "Small chops platters", text: "Puff puff, meat pies, beef kebab, gizdodo and chin chin." },
-  { art: "chin-chin" as const, title: "Gift packs", text: "Chin chin, puff puff and treats, packed beautifully for gifting." },
-  { art: "zobo" as const, title: "Drinks", text: "Chilled zobo and fruit juice by the bottle for your guests." },
+  { src: "/images/jollof-tray.jpg", position: "50% 70%", title: "Party trays", text: "Jollof rice by the tray, with chicken, beef or turkey on the side." },
+  { src: "/images/small-chops-box.jpg", title: "Small chops platters", text: "Puff puff, meat pies, beef kebab, gizdodo and chin chin." },
+  { src: "/images/gift-box.jpg", position: "50% 45%", title: "Gift packs", text: "Jollof, small chops and treats, boxed up for gifting." },
+  { src: "/images/zobo.jpg", position: "50% 70%", title: "Drinks", text: "Chilled zobo by the 2 L bottle for your guests." },
 ];
 
 export default function CateringPage() {
@@ -55,19 +60,27 @@ export default function CateringPage() {
               </a>
             </div>
           </div>
-          <div className="relative mx-auto aspect-square w-full max-w-md">
-            <div className="absolute inset-0 rounded-full bg-cream/10 ring-1 ring-white/20" />
-            <FoodIllustration art="jollof-beef" className="absolute inset-[4%] drop-shadow-[0_30px_30px_rgba(0,0,0,0.35)]" />
-            <div className="absolute -bottom-2 -left-4 w-36 rotate-[-6deg] rounded-3xl bg-cream p-2 shadow-2xl">
-              <div className="aspect-square rounded-2xl" style={{ background: artBackgrounds["meat-pie"] }}>
-                <FoodIllustration art="meat-pie" className="size-full" />
-              </div>
+          <div className="relative mx-auto w-full max-w-md pb-10 pl-8">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border-[10px] border-cream/95 shadow-[0_40px_60px_-30px_rgba(0,0,0,0.6)]">
+              <Photo src="/images/party-tray.jpg" alt="Party tray of beef kebabs and grilled chicken" sizes="(min-width: 1024px) 420px, 90vw" priority />
             </div>
-            <div className="absolute -right-2 top-4 w-32 rotate-[5deg] rounded-3xl bg-cream p-2 shadow-2xl">
-              <div className="aspect-square rounded-2xl" style={{ background: artBackgrounds.kebab }}>
-                <FoodIllustration art="kebab" className="size-full" />
-              </div>
-            </div>
+            <Polaroid
+              src="/images/vendor-table.jpg"
+              alt="Feras Tasty Bites table at a vendor day"
+              caption="vendor day"
+              tilt={-6}
+              sizes="200px"
+              className="absolute -left-2 bottom-0 w-40 sm:w-48"
+            />
+            <Polaroid
+              src="/images/gift-box.jpg"
+              alt="Small chops gift box"
+              caption="gift box"
+              tilt={5}
+              position="50% 45%"
+              sizes="180px"
+              className="absolute -right-4 -top-4 w-32 sm:w-40"
+            />
           </div>
         </div>
       </section>
@@ -95,8 +108,8 @@ export default function CateringPage() {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {offerings.map((o) => (
             <div key={o.title} className="overflow-hidden rounded-[2rem] border border-line bg-paper">
-              <div className="aspect-[4/3]" style={{ background: artBackgrounds[o.art] }}>
-                <FoodIllustration art={o.art} className="size-full p-4" />
+              <div className="group relative aspect-[4/3] overflow-hidden [&_img]:hover:scale-105">
+                <Photo src={o.src} alt={o.title} sizes="(min-width: 1024px) 25vw, 50vw" style={o.position ? { objectPosition: o.position } : undefined} />
               </div>
               <div className="p-6">
                 <h3 className="font-display text-xl font-bold">{o.title}</h3>
@@ -104,6 +117,71 @@ export default function CateringPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section id="bulk-menu" className="container-x scroll-mt-28 pt-24">
+        <div className="grid items-end gap-8 lg:grid-cols-[1.2fr_1fr]">
+          <div>
+            <p className="eyebrow">Bulk food menu</p>
+            <h2 className="mt-3 font-display text-4xl font-black tracking-tight sm:text-5xl">Order party trays online</h2>
+            <p className="mt-4 max-w-xl text-lg text-cocoa">
+              Jollof trays from {formatMoney(65)}, proteins by the piece, pastries by the dozen and zobo by the bottle. Add them to
+              your bag like anything else, or ask us for a custom quote below.
+            </p>
+          </div>
+          <figure className="relative aspect-video overflow-hidden rounded-[2rem] shadow-xl">
+            <LoopVideo
+              className="photo-grade absolute inset-0 size-full object-cover"
+              src="/images/jollof-tray.mp4"
+              poster="/images/jollof-tray.jpg"
+              label="Trays of jollof rice and meat pies ready for a bulk order"
+            />
+            <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent" />
+            <figcaption className="absolute bottom-4 left-5 font-script text-2xl text-cream">Packed and ready to go</figcaption>
+          </figure>
+        </div>
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {productsIn("party-trays").map((p) => (
+            <ProductCard key={p.slug} product={p} />
+          ))}
+        </div>
+      </section>
+
+      <section className="container-x pt-24">
+        <div className="grid items-center gap-10 overflow-hidden rounded-[2.5rem] bg-blush-soft p-8 sm:p-12 lg:grid-cols-[1fr_1.1fr]">
+          <div className="grid grid-cols-2 gap-4">
+            <Polaroid src="/images/small-chops-box.jpg" alt="Box of plantain, meat pies, puff puff and jollof" caption="the full spread" tilt={-4} sizes="240px" aspect="aspect-[4/5]" />
+            <Polaroid src="/images/flavour-pack.jpg" alt="Packed jollof and grilled chicken" caption="jollof & chicken" tilt={4} sizes="240px" aspect="aspect-[4/5]" position="50% 65%" className="translate-y-6" />
+          </div>
+          <div>
+            <p className="eyebrow">Seasonal packages</p>
+            <h2 className="mt-3 font-display text-4xl font-black tracking-tight">Holiday boxes, made to share</h2>
+            <p className="mt-4 text-cocoa">
+              For Valentine&apos;s we put together two packages, each with jollof rice, 12 pieces of plantain, 10 puff puff and 3
+              meat pies, a parfait, a drink and a card:
+            </p>
+            <ul className="mt-5 space-y-3">
+              {[
+                ["Package A", "with two grilled chicken leg quarters", 70],
+                ["Package B", "with a large BBQ tilapia", 75],
+              ].map(([name, text, price]) => (
+                <li key={name as string} className="flex items-center justify-between gap-4 rounded-2xl bg-paper p-4">
+                  <span>
+                    <span className="font-bold">{name}</span> <span className="text-cocoa">{text}</span>
+                  </span>
+                  <span className="font-display text-xl font-bold text-jollof">{formatMoney(price as number)}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-sm text-cocoa">
+              Group orders can double, triple or quadruple the portions. Planning something for a holiday or occasion? Ask us
+              about a custom package.
+            </p>
+            <a href="#quote" className="btn-dark mt-6">
+              Ask about a package <ArrowRightIcon width={18} height={18} />
+            </a>
+          </div>
         </div>
       </section>
 
